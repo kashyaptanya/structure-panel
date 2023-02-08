@@ -1,24 +1,19 @@
-import logo from './logo.svg';
 import './App.css';
+import { HashRouter as Router, BrowserRouter } from 'react-router-dom';
+import React, { lazy, Suspense } from 'react'
+const AppRouter = lazy(() => import('./routes'))
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  <>
+  <BrowserRouter>
+        <Router>
+          <Suspense fallback={<div className={'text-center mt-3 text-primary display-6' } >Loading Please Wait....</div>}>
+            <AppRouter />
+          </Suspense>
+        </Router>
+      </BrowserRouter>
+  </>
   );
 }
 

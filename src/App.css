@@ -1,38 +1,314 @@
-.App {
-  text-align: center;
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap");
+
+html{
+  scroll-behavior: smooth;
+  --defaultbluecolor : rgb(56, 141, 101);
+  --defaultwhitecolor : #ffffff;
+  --fontFamily: "Raleway", sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  overflow-x: hidden;
+  font-family: var(--fontFamily);
+}
+.color {
+  color: var(--defaultbluecolor );
+  ;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+button {
+  width: 99px;
+  height: 34px;
+  padding: 3px;
+  color: #ffffff;
+  background-color: var(--defaultbluecolor );
+  border: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.postion {
+  position: relative;
+  width: 60%;
+}
+
+.child {
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  top: 20px;
+  left: 31%;
+}
+
+.child1 {
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  top: 80px;
+  left: 31%;
+}
+
+.postion h2 {
+  font-family: cursive;
+  font-size: 50px;
+}
+
+.postion p {
+  font-size: 13px;
+}
+
+button {
+  width: 50%;
+}
+
+button:hover {
+  border: 1px solid var(--defaultbluecolor );
+  color: var(--defaultbluecolor );
+  background-color: #ffffff;
+}
+
+input:hover {
+  border: 2px solid var(--defaultbluecolor );
+}
+
+.toast.show {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: end;
 }
 
-.App-link {
-  color: #61dafb;
+.form {
+  position: relative;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.form-label {
+  position: absolute;
+  top: 29px;
+  left: 15px;
+  transform: translateY(-50%);
+  cursor: text;
+  transition: 0.5s;
+  pointer-events: none;
+  font-size: 15px;
+  padding: 10px;
+}
+
+.textbox {
+  border: 1px solid var(--defaultbluecolor );
+  border-radius: 20px;
+  outline: none;
+  background: none;
+  padding: 10px;
+  color: black;
+  width: 100%;
+  height: 44px;
+}
+
+.textbox:focus+.form-label,
+.textbox:valid+.form-label {
+  top: 10%;
+  left: 25px;
+  color: var(--defaultbluecolor );
+  ;
+  padding: 3px;
+  background: #ffffff;
+}
+
+
+.link:hover {
+  color: var(--defaultbluecolor );
+  ;
+  font-weight: bold;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+  font-size: 12px;
+}
+
+.label {
+  font-size: 20px;
+  color: var(--defaultbluecolor )
+}
+
+.btn-warning {
+  position: relative;
+  padding: 5px;
+  font-size: 15px;
+  border-radius: 3px;
+  color: black;
+  background-color: #ffffff;
+  border: 0;
+  overflow: hidden;
+}
+
+.btn-warning input[type="file"] {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: scale(5);
+}
+
+.btn-warning:hover {
+  border: none;
+}
+
+.vl {
+  border-left: 1px solid lightgrey;
+  height: 41px;
+  left: 50%;
+  margin: 7px;
+}
+
+.upload {
+  width: 250px;
+
+}
+
+.imageupload {
+  width: 150px;
+}
+
+.spinner-border {
+  position: absolute;
+  top: 232px;
+  left: 47%;
+}
+
+
+button#btnFetch {
+  height: 40px;
+}
+
+.toast_style {
+  position: absolute;
+  background-color: var(--defaultbluecolor );
+  top: 4px;
+  color: #ffffff;
+  right: 0;
+  /* width: 197px; */
+  border-radius: 5px;
+}
+
+.toast_style1 {
+  position: absolute;
+  background-color: #ffffff;
+  top: 4px;
+  color: var(--defaultbluecolor );
+  right: 0;
+  /* width: 197px; */
+  border-radius: 5px;
+}
+
+.set {
+  top: 19px !important;
+  right: 63px !important;
+}
+
+.bg {
+  background: url("https://wallpaperaccess.com/full/271965.jpg") no-repeat center/cover;
+  width: 100%;
+  height: 100vh;
+}
+
+@media screen and (max-width: 768px) {
+  .bg {
+    height: 20vh;
   }
-  to {
-    transform: rotate(360deg);
+
+  .pb {
+    padding-bottom: 38px;
   }
+
+  .child1 {
+    top: 41px;
+  }
+}
+
+.btn_color {
+  background-color: var(--defaultbluecolor );
+}
+
+.btn_color:hover {
+  color: var(--defaultbluecolor ) !important;
+}
+
+.for_margin {
+  margin-right: 0;
+  --bs-gutter-x: 0 !important;
+}
+
+.resend {
+  text-align: right;
+
+}
+
+.logout {
+  color: var(--defaultbluecolor );
+  /* font-size: 15px; */
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+}
+
+.thestyle {
+  cursor: pointer;
+}
+
+.cancel {
+  background-color: #ffffff;
+  border: 2px solid var(--defaultbluecolor );
+  color: var(--defaultbluecolor );
+  width: 100px;
+}
+
+button.save {
+  background-color: var(--defaultbluecolor );
+  color: #ffffff;
+  width: 100px;
+}
+
+.for_padding {
+  padding-right: 0 !important;
+}
+
+@media (max-width: 1920px) and (min-width :1300px) {
+  .child1 {
+    /* top: 240px; */
+  }
+
+  .child {
+    /* top: 240px; */
+  }
+}
+
+span.anticon.anticon-down {
+  display: none;
+}
+
+.toggle_parent {
+  position: relative;
+}
+
+.toggle_child {
+  position: absolute;
+  right: 20px;
+  top: 17px;
+}
+
+.loader {
+  border: none;
+  text-align: right;
+  color: var(--defaultbluecolor );
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.loader:hover{
+  border: none;
+  color: black;
+  font-size: 500;
+}
+.loader:focus{
+  outline: none;
 }
