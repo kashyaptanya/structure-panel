@@ -1,20 +1,22 @@
 import { useState } from "react"
 import { Button } from "antd"
 import {  Link } from "react-router-dom";
+import { login } from "../../store/user";
+import toast from "../../common/toast"
 import { useHistory } from "react-router-dom"
-import axios from "axios";
+import { useDispatch, useSelector } from 'react-redux'
 
 function Login() {
     const history = useHistory()
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState(false)
-    const [popup, setPopup] = useState(false)
-    const [popup1, setPopup1] = useState(false)
-    const [popup2, setPopup2] = useState(false)
+    // const [popup, setPopup] = useState(false)
     const [passwordType, setPasswordType] = useState("password");
-    const [user, setUser] = useState({
-        email: "",
-        password: ""
-    })
+    const [emailid,setEmail] = useState("")
+    const [password, setPassowrd] = useState("")
+      let email = emailid.trim()
+
+    const loginMessage = useSelector((state) => state.auth.loginMessage)
 
     const toggle = () => {
         if (passwordType === "password") {
@@ -23,71 +25,27 @@ function Login() {
         }
         setPasswordType("password")
     }
-
-    const handlevalue = (e, key) => {
-        setUser({ ...user, [key]: e.target.value })
-    }
-
     const handle_button = async (e) => {
-        if (user.email === "" || user.password === "") {
-            setPopup2(true)
-            setTimeout(() => {
-                setPopup2(false)
-            }, 2000)
+     {
+            if (emailid === "" || password === "") {
+                toast.error("Please Enter Email and Password to Proceed")
+                return false
+            }
+            const successCB = (response) => {
+                if(response?.status){
+                    toast.success("Login Success")
+                    setTimeout(()=>{
+                        history.push("/PanelContainer")
+                    },2000)
+                   
+                }
+            }
+            dispatch(login({ email, password }, successCB))
         }
-
-        let payload = {
-            email: user.email.trim(),
-            password: user.password.trim(),
-        }
-
-        // let result = await axios.post("https://biofamily.solidappmaker.ml/api/v1/admin/login", payload);
-        // console.log("result", result?.data?.data?._id)
-        // console.log("result", result?.data)
-
-        // if (result.data.status === true) {
-        //     localStorage.setItem("admin_id", result?.data?.data?._id)
-        //     localStorage.setItem("users_email", payload.email)
-        //     localStorage.setItem("token", result?.data?.data?.token)
-        //     setLoading(true)
-        //     setPopup(true)
-        //     setTimeout(() => {
-        //     history.push("/Panel")
-        //         window.location.reload()
-        //     }, "500")
-        // }
-        // else {
-        //     setPopup1(true)
-        //     setTimeout(() => {
-        //         setPopup1(false)
-        //     }, 2000)
-        // }
     }
 
     return (
         <>
-            {popup ?
-                <div className="toast show ">
-                    <div className="toast-body toast_style">
-                        Successfully logged-In
-                    </div>
-                </div> : null
-            }
-            {popup1 ?
-                <div className="toast show ">
-                    <div className="toast-body toast_style">
-                        Invalid Details
-                    </div>
-                </div> : null
-            }
-            {popup2 ?
-                <div className="toast show ">
-                    <div className="toast-body toast_style">
-                        Following fields are required : email,password
-                    </div>
-                </div> : null
-            }
-
             <div className="row for_margin" >
                 <div className="col-md-6 for_padding">
                     <div className=" bg ">
@@ -101,13 +59,14 @@ function Login() {
                                 Welcome back
                             </h2>
                             <p className="text-center">Welcome back ! please enter your details</p>
+                            <p className='text-center text-danger' >{loginMessage}</p>
                             <div className="p-2 "  >
                                 <div className="form-group p-2 mb-3  form">
                                     <input className="textbox"
                                         required
                                         type="text"
-                                        value={user?.email ?? ""}
-                                        onChange={(e) => handlevalue(e, 'email')}
+                                        value={emailid}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         placeholder=""
                                     />
                                     <label className="form-label">Email</label>
@@ -117,8 +76,8 @@ function Login() {
                                     <input className="textbox"
                                         required
                                         type={passwordType}
-                                        value={user.password}
-                                        onChange={(e) => handlevalue(e, 'password')}
+                                        value={password}
+                                        onChange={(e) =>setPassowrd(e.target.value)}
                                         placeholder=""
                                     />
                                     <label className="form-label">Password</label>
@@ -143,11 +102,11 @@ function Login() {
 
                             </div>
                             <div className="text-center pb">
-                                <Link className="link" to="/ForgotPassword">Forgot Password</Link>
+                                <Link className="link" to="/Forgot">Forgot Password ?</Link>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> 
             </div>
         </>
     )

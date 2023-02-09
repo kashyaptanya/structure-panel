@@ -2,7 +2,7 @@
 
 html{
   scroll-behavior: smooth;
-  --defaultbluecolor : rgb(56, 141, 101);
+  --defaultbluecolor : #388d65;
   --defaultwhitecolor : #ffffff;
   --fontFamily: "Raleway", sans-serif;
 }
@@ -161,7 +161,7 @@ input:hover {
 }
 
 .upload {
-  width: 250px;
+  width: 260px;
 
 }
 
@@ -206,6 +206,7 @@ button#btnFetch {
 }
 
 .bg {
+  /* background: url("../src/Images/biofamily.png") no-repeat center/cover; */
   background: url("https://wallpaperaccess.com/full/271965.jpg") no-repeat center/cover;
   width: 100%;
   height: 100vh;
@@ -272,15 +273,15 @@ button.save {
   padding-right: 0 !important;
 }
 
-@media (max-width: 1920px) and (min-width :1300px) {
+/* @media (max-width: 1920px) and (min-width :1300px) {
   .child1 {
-    /* top: 240px; */
+    top: 240px;
   }
 
   .child {
-    /* top: 240px; */
+    top: 240px;
   }
-}
+} */
 
 span.anticon.anticon-down {
   display: none;

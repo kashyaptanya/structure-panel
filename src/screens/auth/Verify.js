@@ -1,12 +1,15 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import axios from "axios"
 import { useHistory } from "react-router-dom"
+import toast from "../../common/toast"
+import { verifyOtp } from "../../store/user"
+import { forgotPasswordMail } from '../../store/user'
+import { useDispatch } from 'react-redux'
 import { Button } from "antd"
 
 function Verify() {
-    const [popup, setPopup] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [popup1, setPopup1] = useState(false)
+    const dispatch = useDispatch();
     const history = useHistory()
     const [OTP, setOTP] = useState({
         otp1: "",
@@ -14,22 +17,45 @@ function Verify() {
         otp3: "",
         otp4: "",
     })
+     const otp = OTP.otp1 + OTP.otp2 + OTP.otp3 + OTP.otp4
+        
+    let email = localStorage.getItem("forgot_email")
+    // useEffect(() => {
+    //     let forgot_email = localStorage.getItem("forgot_email")
+    //     if (forgot_email && forgot_email != "") {
+    //         setEmail(forgot_email)
+    //     } else {
+    //         history.push('/forgot')
+    //     }
+    // }, [])
 
     const handlevalue = (e, key) => {
         setOTP({ ...OTP, [key]: e.target.value })
     }
-
+ 
     const resend = async () => {
         setOTP("")
         setLoading(true)
-        let userEmail = localStorage.getItem("users_email")
-        const payload = {
-            email: userEmail
+        const successCB = (response)=>{
+            if(response?.status){
+           setLoading(false)
+    
+            } else {
+                setLoading(false)
+                toast.error(response?.message)
+            }
+
         }
-        const api = await axios.post("https://biofamily.solidappmaker.ml/api/v1/admin/forget_password", payload);
-        if (api.data.status === true) {
-            setLoading(false)
-        }
+        dispatch(forgotPasswordMail({ email }, successCB))
+
+        // let userEmail = localStorage.getItem("users_email")
+        // const payload = {
+        //     email: userEmail
+        // }
+        // const api = await axios.post("https://biofamily.solidappmaker.ml/api/v1/admin/forget_password", payload);
+        // if (api.data.status === true) {
+        //     setLoading(false)
+        // }
     }
 
     const inputFocus = (elmnt) => {
@@ -47,27 +73,53 @@ function Verify() {
     }
 
     const handle_button = async (e) => {
-        localStorage.removeItem("users_password")
-        e.preventDefault()
-        const otp = {
-            otp: OTP.otp1 + OTP.otp2 + OTP.otp3 + OTP.otp4
-        }
 
-        let userData = localStorage.getItem("users_email")
-
-        let payload = {
-            otp: parseInt(OTP.otp1 + OTP.otp2 + OTP.otp3 + OTP.otp4),
-            email: userData
+        const successCB = (response) => {
+            if(response?.status){
+                localStorage.setItem("OTP",otp)
+                toast.success(response?.message)
+                setTimeout(() => {
+                    history.push('/ResetPassword')
+                }, 2000)
+            }
+            else{
+                setLoading(false)
+                toast.error("Please Enter a valid OTP")
+                return false
+            }
+            // if (!response.status) {
+            //     setLoading(false)
+            //     toast.error("Please Enter a valid OTP")
+            //     return false
+            // }
+            // localStorage.setItem("OTP",otp)
+            // toast.success(response?.message)
+            // setTimeout(() => {
+            //     history.push('/ResetPassword')
+            // }, 2000)
         }
+        dispatch(verifyOtp({ email, otp }, successCB))
+        // localStorage.removeItem("users_password")
+        // e.preventDefault()
+        // const otp = {
+        //     otp: OTP.otp1 + OTP.otp2 + OTP.otp3 + OTP.otp4
+        // }
+
+        // let userData = localStorage.getItem("users_email")
+
+        // let payload = {
+        //     otp: parseInt(OTP.otp1 + OTP.otp2 + OTP.otp3 + OTP.otp4),
+        //     email: userData
+        // }
 
         // let result = await axios.post("https://biofamily.solidappmaker.ml/api/v1/admin/verify_otp", payload);
 
         // if (result.data.status === true) {
         //     localStorage.setItem("users_OTP", otp.otp)
-        //     setPopup(true)
-        //     setTimeout(() => {
-        //         history.push("/ResetPassword")
-        //     }, 2000);
+            // setPopup(true)
+            // setTimeout(() => {
+            //     history.push("/ResetPassword")
+            // }, 2000);
         // }
         // else {
         //     setPopup1(true)
@@ -79,24 +131,6 @@ function Verify() {
 
     return (
         <>
-            {
-                popup ?
-                    <div className="toast show ">
-                        <div className="toast-body toast_style">
-                            Processing...
-                        </div>
-                    </div> : null
-            }
-
-            {
-                popup1 ?
-                    <div className="toast show ">
-                        <div className="toast-body toast_style">
-                            Please Enter a valid OTP
-                        </div>
-                    </div> : null
-            }
-
             <div className="row for_margin">
                 <div className="col-md-6  ">
                     <div className=" bg ">

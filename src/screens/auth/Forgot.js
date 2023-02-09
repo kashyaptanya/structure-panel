@@ -1,49 +1,47 @@
 import { useState } from "react"
 import { useHistory } from "react-router-dom"
 import { Button } from "antd"
+import { forgotPasswordMail } from '../../store/user'
+import toast from "../../common/toast"
+import { useDispatch } from 'react-redux'
+
 import axios from "axios";
 
 function Forgot() {
-    const history = useHistory()
+    const history = useHistory()  
+       const dispatch = useDispatch();
     const [loading, setLoading] = useState(false)
-    const [popup, setPopup] = useState(false)
-    const [popup1, setPopup1] = useState(false)
-    const [popup2, setPopup2] = useState(false)
-    const [user, setUser] = useState({
-        email: ""
-    })
+    const [emailid, setEmail] = useState("")
+    let email = emailid.trim()
 
-    const handlevalue = (e, key) => {
-        setUser({ ...user, [key]: e.target.value })
-    }
 
     const handle_button = async (e) => {
-        if (user.email === "") {
-            setPopup2(true)
-            setTimeout(() => {
-                setPopup2(false)
-            }, 2000)
+        if (email === "") {
+            toast.error("Please Enter Your Registered Email to Proceed")
             return false
         }
-
-        localStorage.removeItem("users_OTP")
-        const emailObj = {
-            email: user.email
-        }
-
-        const payload = {
-            email: user.email.trim()
-        }
         setLoading(true)
+        const successCB = (response)=>{
+            if(response?.status){
+                localStorage.setItem("forgot_email", email)
+                toast.success(response?.message) 
+                setTimeout(()=>{
+                    history.push('/Verify')    
+                },2000)
+                 
+            } else {
+                setLoading(false)
+                toast.error(response?.message)
+            }
+
+        }
+        dispatch(forgotPasswordMail({ email }, successCB))
 
         // const result = await axios.post("https://biofamily.solidappmaker.ml/api/v1/admin/forget_password", payload);
         // console.log("result", result)
         // if (result.data.status === true) {
         //     localStorage.setItem("users_email", emailObj.email)
-        //     setPopup(true)
-        //     setTimeout(() => {
-        //         history.push("/Verify")
-        //     }, "2000")
+
         // }
         // else {
         //     setPopup1(true)
@@ -56,33 +54,6 @@ function Forgot() {
 
     return (
         <>
-            {
-                popup ?
-                    <div className="toast show ">
-                        <div className="toast-body toast_style">
-                            To reset password OTP sent on your email address!!
-                        </div>
-                    </div> : null
-            }
-
-            {
-                popup1 ?
-                    <div className="toast show ">
-                        <div className="toast-body toast_style">
-                            Mentioned email is not registered with us
-                        </div>
-                    </div> : null
-            }
-
-            {
-                popup2 ?
-                    <div className="toast show ">
-                        <div className="toast-body toast_style">
-                            Following fields are required : Email
-                        </div>
-                    </div> : null
-            }
-
             <div className="row for_margin">
                 <div className="col-md-6  ">
                     <div className=" bg ">
@@ -101,8 +72,8 @@ function Forgot() {
                                     <input className="textbox"
                                         required
                                         type="text"
-                                        value={user?.email ?? ""}
-                                        onChange={(e) => handlevalue(e, 'email')}
+                                        value={emailid}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         placeholder=""
                                     />
                                     <label className="form-label">Email</label>

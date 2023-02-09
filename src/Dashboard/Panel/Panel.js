@@ -4,37 +4,26 @@ import { Button, Modal } from "antd"
 import { useHistory } from "react-router-dom"
 import { Breadcrumb, Card, Layout } from 'antd';
 import HeaderCom from "../components/Header";
-import FooterCom from "../components/Footer";
-import MenuCom from "../components/Menu";
-const { Content } = Layout;
+
 
 function PanelContainer() {
     return (
         <>
-            <Layout>
-                <MenuCom />
-                <Layout>
                     <HeaderCom />
                     <Panel />
-                    <FooterCom />
-                </Layout>
-            </Layout>
+
         </>
     )
 }
 export default PanelContainer;
 
 function Panel() {
-
+   
     const history = useHistory()
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [imgpop, setImgpop] = useState(false);
     const [msgpop, setMsgpop] = useState(false);
     const [loading, setLoading] = useState(false)
-
-    let userToken = localStorage.getItem("token")
-
 
     const [user, setUser] = useState({
         Title: "",
@@ -47,48 +36,48 @@ function Panel() {
         setUser({ ...user, [key]: e.target.value })
     }
     const handle_button = async (e) => {
-        if (user.Title === "" || user.body === "" || imgPath === "") {
-            setMsgpop(true)
-            setTimeout(() => {
-                setMsgpop(false)
-            }, 1000)
-            return false
-        }
-        setLoading(true)
+        // if (user.Title === "" || user.body === "" || imgPath === "") {
+        //     setMsgpop(true)
+        //     setTimeout(() => {
+        //         setMsgpop(false)
+        //     }, 1000)
+        //     return false
+        // }
+        // setLoading(true)
 
-        var formData = new FormData();
-        formData.append("text", user.Title);
-        formData.append("body", user.body);
-        formData.append("img_upload", imgPath);
-        let apiHit = await axios.post("https://biofamily.solidappmaker.ml/api/v1/user/fire_notification_users", formData)
-        if (apiHit.data.status === true) {
-            setUser("")
-            setImgShoUrl("")
-            setLoading(false)
-            // modal show here
-            setIsModalOpen(true);
-            setTimeout(() => {
-                // modal close here
-                setIsModalOpen(false);
-            }, 3000)
-        } else {
-            setLoading(false)
-        }
+        // var formData = new FormData();
+        // formData.append("text", user.Title);
+        // formData.append("body", user.body);
+        // formData.append("img_upload", imgPath);
+        // let apiHit = await axios.post("https://biofamily.solidappmaker.ml/api/v1/user/fire_notification_users", formData)
+        // if (apiHit.data.status === true) {
+        //     setUser("")
+        //     setImgShoUrl("")
+        //     setLoading(false)
+        //     // modal show here
+        //     setIsModalOpen(true);
+        //     setTimeout(() => {
+        //         // modal close here
+        //         setIsModalOpen(false);
+        //     }, 3000)
+        // } else {
+        //     setLoading(false)
+        // }
     }
 
     const handleImg = (e) => {
-        let file = e.target.files[0]
-        if (e.target.files[0].size <= 300000) {
-            setImgPath(file)
-            setImgShoUrl(URL.createObjectURL(file))
-        }
-        else {
-            setImgpop(true)
-            setTimeout(() => {
-                setImgpop(false)
-            }, 1000)
-            return false
-        }
+        // let file = e.target.files[0]
+        // if (e.target.files[0].size <= 300000) {
+        //     setImgPath(file)
+        //     setImgShoUrl(URL.createObjectURL(file))
+        // }
+        // else {
+        //     setImgpop(true)
+        //     setTimeout(() => {
+        //         setImgpop(false)
+        //     }, 1000)
+        //     return false
+        // }
     }
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -104,15 +93,7 @@ function Panel() {
 
     return (
         <>
-            <Content style={{ padding: '0 50px', minWidth: 500 }}>
-                <Breadcrumb style={{ margin: '16px 0', minWidth: 500 }}>
-                    <Breadcrumb.Item>Salesa</Breadcrumb.Item>
-                    <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
-                    <Breadcrumb.Item>User</Breadcrumb.Item>
-                </Breadcrumb>
-                <div className="site-layout-content" style={{ background: "#fff", padding: 24, minHeight: 430 }}>
-                    <Card title="Admin" bordered={false}>
-                    <div className=" container  ">
+            <div className=" container  ">
                 <div className="postion">
                     <div className="child ">
                         <div className="shadow p-4 rounded">
@@ -159,17 +140,14 @@ function Panel() {
                                     className="text-white btn_color" id="btnFetch">
                                     Send
                                 </Button>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-                    </Card>
-                </div>
-            </Content>
+            {/* </Card> */}
+            {/* </div> */}
+            {/* </Content> */}
 
             <Modal title="Notification has been sent" open={isModalOpen} footer={null} onCancel={handleCancel}>
             </Modal>
@@ -177,7 +155,7 @@ function Panel() {
             </Modal>
             <Modal title=" Please fill all the required fields" open={msgpop} footer={null} onCancel={handleCancel}  >
             </Modal>
-         
+
         </>
     )
 }

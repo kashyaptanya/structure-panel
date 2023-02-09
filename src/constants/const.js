@@ -1,0 +1,1 @@
+export const base_url = "https://biofamily.solidappmaker.ml/api/v1/"

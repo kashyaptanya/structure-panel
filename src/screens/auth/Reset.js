@@ -1,18 +1,23 @@
 import { useState } from "react"
 import { Button } from "antd"
 import { useHistory } from "react-router-dom"
-import axios from "axios"
+import { reset_password } from '../../store/user'
+import toast from "../../common/toast"
+
+import { useDispatch } from 'react-redux'
 
 function ResetPassword() {
     const [passwordType, setPasswordType] = useState("password");
-    const [popup, setPopup] = useState(false)
-    const [popup1, setPopup1] = useState(false)
     const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
     const history = useHistory()
     const [user, setUser] = useState({
         pass: "",
         password: ""
     })
+    let password = user.password
+    let otp = localStorage.getItem("OTP")
+    let email = localStorage.getItem("forgot_email")
     const handlevalue = (e, key) => {
         setUser({ ...user, [key]: e.target.value })
     }
@@ -27,45 +32,66 @@ function ResetPassword() {
         setPasswordType("password")
     }
 
+
     const handle_button = async (e) => {
         e.preventDefault()
-        let userData = localStorage.getItem("users_email")
-        let userotp = localStorage.getItem("users_OTP")
-
-        let payload = {
-            otp: userotp,
-            email: userData,
-            password: user.password.trim()
+        if (user.pass === ""&& user.password=== ""){
+            toast.error("Please fill all the required fields to proceed")
+            return false
+        }
+        if (user.password !== user.pass) {
+            toast.error("Password and Confirm Password should be same ")
+            return false
         }
 
-        if (user.password === user.pass) {
+            setLoading(true)
+            const successCB = (response) => {
+                console.log("nbu",response)
+                if (response?.status) {
+                toast.success("Password Changed Successfully")
+                localStorage.removeItem("forgot_email")
+                localStorage.removeItem("OTP")
+                setTimeout(() => {
+                    history.push('/')
+                }, 1000)}
+            }
+            dispatch(reset_password({ email, otp, password }, successCB))
+        }
+              // let userData = localStorage.getItem("users_email")
+        // let userotp = localStorage.getItem("users_OTP")
+
+        // let payload = {
+        //     otp: userotp,
+        //     email: userData,
+        //     password: user.password.trim()
+        // }
             // let result = await axios.post("https://biofamily.solidappmaker.ml/api/v1/admin/reset_password", payload);
  
             // if (result.data.status === true) {
             //     localStorage.removeItem("users_OTP")
             //     localStorage.setItem("users_password", user.password)
-            //     setPopup1(true)
-            //     setLoading(true)
-            //     setTimeout(() => {
-            //         setPopup1(false)
-            //         history,push("/")
-            //     }, 2000)
+                // setPopup1(true)
+                // setLoading(true)
+                // setTimeout(() => {
+                //     setPopup1(false)
+                //     history.push("/")
+                // }, 2000)
             // }
             // else {
             //     return
             // }
-        }
-        else {
-            setPopup(true)
-            setTimeout(() => {
-                setPopup(false)
-            }, "2000")
-        }
-    }
+        
+        // else {
+        //     setPopup(true)
+        //     setTimeout(() => {
+        //         setPopup(false)
+        //     }, "2000")
+        // }
+    
 
     return (
         <>
-            {
+            {/* {
             popup ?
                 <div className="toast show ">
                     <div className="toast-body toast_style">
@@ -81,7 +107,7 @@ function ResetPassword() {
                         Successfully Reset your Password
                     </div>
                 </div> : null
-            }
+            } */}
 
                 <div className="row for_margin">
                     <div className="col-md-6  ">
