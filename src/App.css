@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap");
 
+
+
 html{
   scroll-behavior: smooth;
   --defaultbluecolor : #388d65;
@@ -69,10 +71,10 @@ input:hover {
   border: 2px solid var(--defaultbluecolor );
 }
 
-.toast.show {
+/* .toast.show {
   display: flex;
   justify-content: end;
-}
+} */
 
 .form {
   position: relative;
@@ -180,13 +182,12 @@ button#btnFetch {
   height: 40px;
 }
 
-.toast_style {
+/* .toast_style {
   position: absolute;
   background-color: var(--defaultbluecolor );
   top: 4px;
   color: #ffffff;
   right: 0;
-  /* width: 197px; */
   border-radius: 5px;
 }
 
@@ -197,8 +198,8 @@ button#btnFetch {
   color: var(--defaultbluecolor );
   right: 0;
   /* width: 197px; */
-  border-radius: 5px;
-}
+  /* border-radius: 5px; */
+/* } */ 
 
 .set {
   top: 19px !important;

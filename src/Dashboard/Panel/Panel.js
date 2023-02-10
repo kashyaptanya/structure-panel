@@ -4,13 +4,15 @@ import { Button, Modal } from "antd"
 import { useHistory } from "react-router-dom"
 import { Breadcrumb, Card, Layout } from 'antd';
 import HeaderCom from "../components/Header";
+import { useSelector } from "react-redux";
+
 
 
 function PanelContainer() {
     return (
         <>
-                    <HeaderCom />
-                    <Panel />
+            <HeaderCom />
+            <Panel />
 
         </>
     )
@@ -18,12 +20,14 @@ function PanelContainer() {
 export default PanelContainer;
 
 function Panel() {
-   
+
     const history = useHistory()
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [imgpop, setImgpop] = useState(false);
     const [msgpop, setMsgpop] = useState(false);
     const [loading, setLoading] = useState(false)
+
+    const token = useSelector((state) => state.auth.token)
 
     const [user, setUser] = useState({
         Title: "",
@@ -86,10 +90,11 @@ function Panel() {
     };
 
     // useEffect(() => {
-    //     if (!userToken) {
+    //     if (!token) {
     //         history.push("/")
+    //         // window.location.reload()
     //     }
-    // }, userToken);
+    // }, token);
 
     return (
         <>
@@ -145,10 +150,7 @@ function Panel() {
                     </div>
                 </div>
             </div>
-            {/* </Card> */}
-            {/* </div> */}
-            {/* </Content> */}
-
+    
             <Modal title="Notification has been sent" open={isModalOpen} footer={null} onCancel={handleCancel}>
             </Modal>
             <Modal title=" Please select file less than 300 kb." open={imgpop} footer={null} onCancel={handleCancel} >

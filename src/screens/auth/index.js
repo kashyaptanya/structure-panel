@@ -8,6 +8,4 @@ export{
     Forgot,
     Verify,
  ResetPassword
-
-    
 }

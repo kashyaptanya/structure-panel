@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import api from "../utils/api"
+
 const initialToken = localStorage.getItem('token') ? localStorage.getItem('token') : null
+
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
         user: null,
         token: initialToken,
-        loginMessage: '',
+        loginMessage: null,
         adminId: ""
     },
     reducers: {
@@ -22,25 +24,24 @@ const authSlice = createSlice({
             state.loginMessage = action.payload.response.message;
 
         },
-        userData: (state, action) => {
-            const userData = action.payload.user;
-            state.user = userData;
+        emailChangeSuccess:(state,action)=>{
+            state.user = action.payload.admin_data;
         },
 
-        logoutSuccess: (state, action) => {
+        logoutSuccess: (state) => {
             state.token = null;
             state.user = null;
+            state.adminId = null
             localStorage.removeItem('token')
-            localStorage.removeItem("admin_id")
+            localStorage.removeItem("admin_id") 
         },
     }
 })
-const { loginSuccess, loginFailure, logoutSuccess } = authSlice.actions
-
-
+const { loginSuccess, loginFailure, logoutSuccess ,emailChangeSuccess} = authSlice.actions
 
 export const login = ({ email, password }, successCB) => async dispatch => {
     let loginResponse = await api.post('admin/login', { email, password })
+
     if (loginResponse.data.status) {
         let token = loginResponse.data.data.token
         let admin_data = loginResponse.data.data.email
@@ -49,6 +50,7 @@ export const login = ({ email, password }, successCB) => async dispatch => {
         successCB(loginResponse?.data)
     } else {
         dispatch(loginFailure({ response: loginResponse.data }))
+        successCB(loginResponse?.data)
     }
 }
 
@@ -76,8 +78,6 @@ export const verifyOtp = (data, successCB) => async dispatch => {
     }
 }
 
-
-
 export const reset_password = (data, successCB) => async dispatch => {
     try {
         let resetResponse = await api.post('admin/reset_password', data)
@@ -88,17 +88,23 @@ export const reset_password = (data, successCB) => async dispatch => {
         successCB({ status: false, message: e })
     }
 }
-export const logout = (data,successCB) => async dispatch => {
-    try {
-        let logoutResponse = await api.post("admin/logout",data)
-        if(logoutResponse?.data){
-            successCB(logoutResponse?.data)  
-            return dispatch(logoutSuccess())
-        }
-        
-    } catch (e) {
-        successCB({ status: false, message: e })
-        // return console.error(e.message);
+export const logout = (payload) => async dispatch => {
+    let logoutResponse = await api.post("admin/logout", payload)
+    if (logoutResponse?.data) {
+      
+        dispatch(logoutSuccess({ response: logoutResponse.data }))
+        // successCB(logoutResponse?.data)
+    }
+}
+
+
+export const emailChange = (email,successCB)=> async dispatch =>{
+    let changedResponse = await api.post("admin/change_email",email, { headers: { Authorization: `Bearer ${initialToken}` } })
+  let convert = JSON.parse(changedResponse.config.data)
+    if (changedResponse?.data) {
+        let admin_data = convert.email
+        dispatch(emailChangeSuccess({ admin_data,response: changedResponse.email }))
+        successCB(changedResponse?.data)
     }
 }
 

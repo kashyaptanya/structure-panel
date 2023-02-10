@@ -5,51 +5,33 @@ import { forgotPasswordMail } from '../../store/user'
 import toast from "../../common/toast"
 import { useDispatch } from 'react-redux'
 
-import axios from "axios";
-
 function Forgot() {
-    const history = useHistory()  
-       const dispatch = useDispatch();
+    const history = useHistory()
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState(false)
     const [emailid, setEmail] = useState("")
     let email = emailid.trim()
 
-
-    const handle_button = async (e) => {
-        if (email === "") {
+    const handle_button = () => {
+        if (emailid === "") {
             toast.error("Please Enter Your Registered Email to Proceed")
             return false
         }
         setLoading(true)
-        const successCB = (response)=>{
-            if(response?.status){
+        const successCB = (response) => {
+            if (response?.status) {
                 localStorage.setItem("forgot_email", email)
-                toast.success(response?.message) 
-                setTimeout(()=>{
-                    history.push('/Verify')    
-                },2000)
-                 
+                toast.success(response?.message)
+                setTimeout(() => {
+                    history.push('/Verify')
+                }, 2000)
+
             } else {
                 setLoading(false)
                 toast.error(response?.message)
             }
-
         }
         dispatch(forgotPasswordMail({ email }, successCB))
-
-        // const result = await axios.post("https://biofamily.solidappmaker.ml/api/v1/admin/forget_password", payload);
-        // console.log("result", result)
-        // if (result.data.status === true) {
-        //     localStorage.setItem("users_email", emailObj.email)
-
-        // }
-        // else {
-        //     setPopup1(true)
-        //     setTimeout(() => {
-        //         setLoading(false)
-        //         setPopup1(false)
-        //     }, 2000)
-        // }
     }
 
     return (

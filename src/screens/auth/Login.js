@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Button } from "antd"
-import {  Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { login } from "../../store/user";
 import toast from "../../common/toast"
 import { useHistory } from "react-router-dom"
@@ -10,14 +10,13 @@ function Login() {
     const history = useHistory()
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false)
-    // const [popup, setPopup] = useState(false)
+    const [msg, setMsg] = useState(false)
     const [passwordType, setPasswordType] = useState("password");
-    const [emailid,setEmail] = useState("")
+    const [emailid, setEmail] = useState("")
     const [password, setPassowrd] = useState("")
-      let email = emailid.trim()
-
+    let email = emailid.trim()
     const loginMessage = useSelector((state) => state.auth.loginMessage)
-
+    
     const toggle = () => {
         if (passwordType === "password") {
             setPasswordType("text")
@@ -25,23 +24,26 @@ function Login() {
         }
         setPasswordType("password")
     }
-    const handle_button = async (e) => {
-     {
-            if (emailid === "" || password === "") {
-                toast.error("Please Enter Email and Password to Proceed")
-                return false
-            }
-            const successCB = (response) => {
-                if(response?.status){
-                    toast.success("Login Success")
-                    setTimeout(()=>{
-                        history.push("/PanelContainer")
-                    },2000)
-                   
-                }
-            }
-            dispatch(login({ email, password }, successCB))
+
+    const handle_button =  () => {
+        setLoading(true)
+        if (emailid === "" || password === "") {
+            toast.error("Please Enter Email and Password to Proceed")
+            return false
         }
+        const successCB = (response) => {
+            if (response?.status) {
+                toast.success(response?.message)
+                setTimeout(() => {
+                    history.push("/PanelContainer")
+                }, 2000)
+            }
+            else {
+                setLoading(false)
+                setMsg(true)
+            }
+        }
+        dispatch(login({ email, password }, successCB))
     }
 
     return (
@@ -59,7 +61,7 @@ function Login() {
                                 Welcome back
                             </h2>
                             <p className="text-center">Welcome back ! please enter your details</p>
-                            <p className='text-center text-danger' >{loginMessage}</p>
+                            {msg ? <p className='text-center text-danger' >{loginMessage}</p> : null}
                             <div className="p-2 "  >
                                 <div className="form-group p-2 mb-3  form">
                                     <input className="textbox"
@@ -77,7 +79,7 @@ function Login() {
                                         required
                                         type={passwordType}
                                         value={password}
-                                        onChange={(e) =>setPassowrd(e.target.value)}
+                                        onChange={(e) => setPassowrd(e.target.value)}
                                         placeholder=""
                                     />
                                     <label className="form-label">Password</label>
@@ -106,7 +108,7 @@ function Login() {
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
             </div>
         </>
     )
