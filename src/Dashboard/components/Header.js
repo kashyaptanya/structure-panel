@@ -1,6 +1,6 @@
 
 import { useHistory } from "react-router-dom"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Image, Space, Modal, Avatar, Layout } from 'antd';
 import logo from "../../Images/logo.png"
@@ -16,7 +16,6 @@ function HeaderCom() {
     const dispatch = useDispatch()
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [changeEmail, setChangeMail] = useState("")
-    let email = changeEmail.trim()
     const history = useHistory()
     let admin_id = localStorage.getItem("admin_id")
 
@@ -44,6 +43,10 @@ function HeaderCom() {
         setChangeMail("")
     };
 
+    useEffect(() => {
+        setChangeMail(user)
+    }, [])
+
     const onClick = ({ key }) => {
         if (key === 'logoutkey') {
             logoutkey()
@@ -59,28 +62,28 @@ function HeaderCom() {
     }
 
     const save = async () => {
-        if (user === email) {
+        if (user === changeEmail) {
             toast.error("Email already exist, please use different email")
             setIsModalOpen(false);
             setChangeMail("")
         }
-        else if (!email) {
-            toast.error("following feild are required")
-        }
-        else {
-            
-        }
-       
         const successCB = (response) => {
-            console.log("ressss",response)
             if (response?.status) {
                 setIsModalOpen(false)
                 setChangeMail("")
                 toast.success(response?.message)
             }
         }
-        dispatch(emailChange({ email }, successCB))
+        dispatch(emailChange({ email: changeEmail }, successCB))
     };
+
+    const handleEmail = (email) => {
+        if(email.trim() != ""){
+            setChangeMail(email)
+        } else {
+            toast.error("email bharle re baba")
+        }
+    }
 
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -115,7 +118,7 @@ function HeaderCom() {
             </Header>
 
             <Modal title="Change Your Email" open={isModalOpen} footer={null} onCancel={handleCancel}>
-                <input placeholder="Enter email" required className="form-control" value={changeEmail} onChange={(e) => setChangeMail(e.target.value)}></input>
+                <input placeholder="Enter email" className="form-control" value={changeEmail} onChange={(e) => handleEmail(e.target.value)}></input>
                 <br></br>
                 <div className="text-center">
                     <button className="save" onClick={save}>Save</button>
