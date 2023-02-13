@@ -78,7 +78,7 @@ function HeaderCom() {
     };
 
     const handleEmail = (email) => {
-        if(email.trim() != ""){
+        if (email.trim() != "") {
             setChangeMail(email)
         } else {
             toast.error("email bharle re baba")
