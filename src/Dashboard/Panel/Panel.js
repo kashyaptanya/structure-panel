@@ -6,8 +6,6 @@ import { Breadcrumb, Card, Layout } from 'antd';
 import HeaderCom from "../components/Header";
 import { useSelector } from "react-redux";
 
-
-
 function PanelContainer() {
     return (
         <>
@@ -149,7 +147,7 @@ function Panel() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>  
     
             <Modal title="Notification has been sent" open={isModalOpen} footer={null} onCancel={handleCancel}>
             </Modal>

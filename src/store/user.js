@@ -46,7 +46,7 @@ export const login = ({ email, password }, successCB) => async dispatch => {
         let token = loginResponse.data.data.token
         let admin_data = loginResponse.data.data.email
         let msg = loginResponse.data.status
-        dispatch(loginSuccess({ token, admin_data, msg, response: loginResponse.data }));
+        dispatch(loginSuccess({ token,admin_data, msg, response: loginResponse.data }));
         successCB(loginResponse?.data)
     } else {
         dispatch(loginFailure({ response: loginResponse.data }))
@@ -107,9 +107,5 @@ export const emailChange = (email,successCB)=> async dispatch =>{
         successCB(changedResponse?.data)
     }
 }
-
-
-
-
 
 export default authSlice.reducer  

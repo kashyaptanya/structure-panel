@@ -71,11 +71,6 @@ input:hover {
   border: 2px solid var(--defaultbluecolor );
 }
 
-/* .toast.show {
-  display: flex;
-  justify-content: end;
-} */
-
 .form {
   position: relative;
 }
@@ -182,25 +177,6 @@ button#btnFetch {
   height: 40px;
 }
 
-/* .toast_style {
-  position: absolute;
-  background-color: var(--defaultbluecolor );
-  top: 4px;
-  color: #ffffff;
-  right: 0;
-  border-radius: 5px;
-}
-
-.toast_style1 {
-  position: absolute;
-  background-color: #ffffff;
-  top: 4px;
-  color: var(--defaultbluecolor );
-  right: 0;
-  /* width: 197px; */
-  /* border-radius: 5px; */
-/* } */ 
-
 .set {
   top: 19px !important;
   right: 63px !important;
@@ -274,16 +250,6 @@ button.save {
   padding-right: 0 !important;
 }
 
-/* @media (max-width: 1920px) and (min-width :1300px) {
-  .child1 {
-    top: 240px;
-  }
-
-  .child {
-    top: 240px;
-  }
-} */
-
 span.anticon.anticon-down {
   display: none;
 }
@@ -314,3 +280,10 @@ span.anticon.anticon-down {
 .loader:focus{
   outline: none;
 }
+ @media (max-width: 768px)  {
+  .col-md-6.bg-white {
+    width: 100%;
+}  
+.col-md-6.for_padding {
+  width: 100%;
+} }

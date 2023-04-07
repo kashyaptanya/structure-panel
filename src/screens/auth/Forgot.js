@@ -41,7 +41,6 @@ function Forgot() {
                     <div className=" bg ">
                     </div>
                 </div>
-
                 <div className="col-md-6 bg-white ">
                     <div className="postion">
                         <div className="child1">

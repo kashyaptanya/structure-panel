@@ -20,7 +20,7 @@ function ResetPassword() {
     const handlevalue = (e, key) => {
         setUser({ ...user, [key]: e.target.value })
     }
-
+    
     const toggle = () => {
         console.log("toggle")
         if (passwordType === "password") {
@@ -43,7 +43,7 @@ function ResetPassword() {
 
         setLoading(true)
         const successCB = (response) => {
-            console.log("nbu", response)
+            console.log("response=>", response)
             if (response?.status) {
                 toast.success("Password Changed Successfully")
                 localStorage.removeItem("forgot_email")
@@ -71,7 +71,7 @@ function ResetPassword() {
                                 Reset Password
                             </h2>
                             <p className="text-center">Please create a new password </p>
-                            <div className="p-2 "  >
+                            <div className="p-2 ">
 
                                 <div className="form-group p-2 mb-3  form">
                                     <input className="textbox"
